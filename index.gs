@@ -1,5 +1,5 @@
 const play_list_id = "PLnD3JG_5-KED5ZPdlx9j-JrnRJHkA-qx2";
-const remove_limit = 3;//days
+const remove_limit = 20;//days
 
 /**
  * データを検証した数
