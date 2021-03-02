@@ -84,40 +84,24 @@ function shuffle(){
 };
 
 function remove_playList(item_info){
-  let number_date = Number(item_info.snippet.publishedAt.slice(0,10).replace("-","").replace("-",""));
-  //console.log("追加日:" + String(number_date));
+  //console.log(item_info.snippet.publishedAt)
+  var add_date = item_info.snippet.publishedAt.slice(0,10).split("-");
+  //console.log(add_date)
+  var add_date = new Date(add_date[0],add_date[1] - 1,add_date[2]);
+  //console.log(add_date);
+  let now_date = new Date();
 
-  let new_date = new Date();
+  let limit = 86400000 * remove_limit;
 
-  function add_zero(number,leng){
-    let str = String(number);
-    function add(){
-      
-      if(str.length == leng){
+  let now_add = now_date.getTime() - add_date.getTime();
+  //console.log(now_add);
 
-      }else{
-        str = "0" + str;
-        if(str.length < 10){
-          add();
-        }
-      }
-    };
-    add()
-
-    return str;
-  };
-
-  let now_date = add_zero(new_date.getFullYear(),4) + add_zero(new_date.getMonth() + 1,2) + add_zero(new_date.getDate(),2);
-
-
-
-  //console.log("現在:" + now_date);
-  console.log(Number(now_date) - Number(number_date) + "日前に追加された動画です。")
-  if(Number(now_date) - Number(number_date) > remove_limit){
-    console.log("削除対象");
-    console.log(item_info.id)
-    YouTube.PlaylistItems.remove(item_info.id)
+  if(now_add > limit){
+    console.log("now_add:" + now_add + " " + " limit:" + limit + " により " + item_info.id + " は削除対象");
+    YouTube.PlaylistItems.remove(item_info.id);
     console.log("削除済み");
+  }else{
+    console.log("now_add:" + now_add + " " + " limit:" + limit + " により " + item_info.id + " は何もしない");
   };
 }
 
